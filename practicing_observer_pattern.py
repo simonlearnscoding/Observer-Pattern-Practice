@@ -35,5 +35,48 @@ class NewsChannel:
     
 class Farmer:
    __init__(interests):
+    
         super().__init__(interests) 
      
+# -------------------------
+
+
+class WeatherStation:
+    def __init__(self):
+        self.subscribers = {
+            "good_weather": [],
+            "bad_weather": [],
+        }
+
+    def update_weather(self, weather_type, degrees):
+        for agent in self.subscribers[weather_type]:
+            agent.notify(weather_type, degrees)
+
+    def subscribe(self, weather_type, agent):
+        self.subscribers[weather_type].append(agent)
+
+
+class WeatherObserver:
+    def __init__(self, name):
+        self.name = name
+
+    def notify(self, weather_type, degrees):
+        pass  # This will be overridden by subclasses.
+
+
+class WeatherApp(WeatherObserver):
+    def notify(self, weather_type, degrees):
+        print(f"Weather App: It is {degrees} degrees and {weather_type} in Houston")
+
+
+class NewsChannel(WeatherObserver):
+    def notify(self, weather_type, degrees):
+        print(f"News Channel: Breaking news! It is {degrees} degrees and {weather_type} in Houston")
+
+
+class Farmer(WeatherObserver):
+    def notify(self, weather_type, degrees):
+        if weather_type == "bad_weather":
+            print(f"Farmer: It's {weather_type}, better cover the crops!")
+        else:
+            print(f
